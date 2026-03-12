@@ -506,3 +506,59 @@
 \DeclareMathOperator{\sign}{sign}
 \DeclareMathOperator{\Tr}{Tr}
 \let\ab\allowbreak
+
+%%%%% ADDITIONAL ML MACROS %%%%%
+
+% Additional operators
+\DeclareMathOperator{\relu}{ReLU}
+\DeclareMathOperator{\gelu}{GELU}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\supp}{supp}
+
+% Loss functions and objectives
+\newcommand{\Loss}{\mathcal{L}}
+\newcommand{\Obj}{\mathcal{J}}
+
+% Distributions
+\newcommand{\Normal}{\mathcal{N}}
+\newcommand{\Uniform}{\mathcal{U}}
+
+% Common sets
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\naturals}{\mathbb{N}}
+\newcommand{\integers}{\mathbb{Z}}
+
+% Norms and inner products
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\inner}[2]{\langle #1, #2 \rangle}
+
+% Probability shorthands
+\newcommand{\prob}[1]{\mathbb{P}\left( #1 \right)}
+\newcommand{\expect}[1]{\mathbb{E}\left[ #1 \right]}
+
+% Model notation
+\newcommand{\params}{\theta}
+\newcommand{\dataset}{\mathcal{D}}
+\renewcommand{\train}{\mathcal{D}_{\text{train}}}
+\newcommand{\val}{\mathcal{D}_{\text{val}}}
+\renewcommand{\test}{\mathcal{D}_{\text{test}}}
+
+% Big-O notation
+\newcommand{\bigo}[1]{\mathcal{O}\!\left( #1 \right)}
+
+% Floor and ceiling (auto-sizing, overrides the basic versions above)
+\renewcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\renewcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+% Convergence
+\newcommand{\convp}{\xrightarrow{p}}     % convergence in probability
+\newcommand{\convd}{\xrightarrow{d}}     % convergence in distribution
+\newcommand{\convas}{\xrightarrow{a.s.}} % almost sure convergence
+
+% Complexity classes
+\newcommand{\NP}{\textsf{NP}\xspace}
+\newcommand{\Pclass}{\textsf{P}\xspace}
+\newcommand{\NPhard}{\textsf{NP-hard}\xspace}

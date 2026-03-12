@@ -1,38 +1,59 @@
-
 \documentclass[10pt]{article} % For LaTeX2e
-\usepackage{tmlr}
+% \usepackage{tmlr}
 % If accepted, instead use the following line for the camera-ready submission:
 %\usepackage[accepted]{tmlr}
 % To de-anonymize and remove mentions to TMLR (for example for posting to preprint servers), instead use the following:
-%\usepackage[preprint]{tmlr}
+\usepackage[preprint]{tmlr}
 
 % Optional math commands from https://github.com/goodfeli/dlbook_notation.
 \input{math_commands.tex}
 
+%% ─── Essential packages for ML papers ───────────────────────────────────────
 \usepackage{hyperref}
 \usepackage{url}
+\let\eqref\undefined % undo math_commands.tex \def\eqref so cleveref/amsmath can define it properly
+\usepackage{booktabs}       % Professional-quality tables
+\usepackage{multirow}       % Multi-row cells in tables
+\usepackage{graphicx}       % Enhanced figure inclusion
+\usepackage{subcaption}     % Sub-figures (a), (b), (c)
+\usepackage{algorithm}      % Algorithm float environment
+\usepackage{algpseudocode}  % Pseudocode typesetting (from algorithmicx, no \AND conflict)
+\usepackage{xcolor}         % Colored text (for TODOs and highlights)
+\usepackage{microtype}      % Improved typography and line breaking
+\usepackage{xspace}         % Smart spacing after macros
+\usepackage{enumitem}       % Better list control
+\usepackage{wrapfig}        % Wrap text around figures
+\usepackage{tablefootnote}  % Footnotes inside tables
+\usepackage{amsthm}         % Theorem environments
+\usepackage{tikz}           % Diagrams and drawings
+\usepackage{pgfplots}       % Plots directly in LaTeX
+\pgfplotsset{compat=1.18}
+\usepackage[capitalize,noabbrev]{cleveref} % Smart cross-references (\cref, \Cref)
 
+%% ─── Theorem environments ───────────────────────────────────────────────────
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{assumption}[theorem]{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
 
-\title{Formatting Instructions for TMLR \\Journal Submissions}
-
-% Authors must not appear in the submitted version. They should be hidden
-% as long as the tmlr package is used without the [accepted] or [preprint] options.
-% Non-anonymous submissions will be rejected without review.
-
-\author{\name Kyunghyun Cho \email kyunghyun.cho@nyu.edu \\
-      \addr Department of Computer Science\\
-      University of New York
-      \AND
-      \name Raia Hadsell \email raia@google.com \\
-      \addr DeepMind
-      \AND
-      \name Hugo Larochelle \email hugolarochelle@google.com\\
-      \addr Mila, Universit\'e de Montr\'eal \\
-      Google Research\\
-      CIFAR Fellow}
-
-% The \author macro works with any number of authors. Use \AND 
-% to separate the names and addresses of multiple authors.
+%% ─── Collaboration macros ───────────────────────────────────────────────────
+% Color-coded TODO comments (remove before submission)
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\authorA}[1]{\textcolor{blue}{\textbf{[A1: #1]}}}
+\newcommand{\authorB}[1]{\textcolor{orange}{\textbf{[A2: #1]}}}
+\newcommand{\authorC}[1]{\textcolor{purple}{\textbf{[A3: #1]}}}
+% Uncomment the following to suppress all comments for final submission:
+% \renewcommand{\todo}[1]{}
+% \renewcommand{\authorA}[1]{}
+% \renewcommand{\authorB}[1]{}
+% \renewcommand{\authorC}[1]{}
 
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
@@ -42,366 +63,420 @@
 \def\openreview{\url{https://openreview.net/forum?id=XXXX}} % Insert correct link to OpenReview for camera-ready version
 
 
+%% ─── Paper metadata ─────────────────────────────────────────────────────────
+
+\title{Your Paper Title Here}
+
+% Authors must not appear in the submitted version. They should be hidden
+% as long as the tmlr package is used without the [accepted] or [preprint] options.
+% Non-anonymous submissions will be rejected without review.
+
+\author{\name First Author \email first@example.com \\
+      \addr Department of Computer Science\\
+      University Name
+      \AND
+      \name Second Author \email second@example.com \\
+      \addr Department of Computer Science\\
+      University Name}
+
+% The \author macro works with any number of authors. Use \AND
+% to separate the names and addresses of multiple authors.
+
+
 \begin{document}
 
 
 \maketitle
 
 \begin{abstract}
-The abstract paragraph should be indented 1/2~inch on both left and
-right-hand margins. Use 10~point type, with a vertical spacing of 11~points.
-The word \textbf{\large Abstract} must be centered, in bold, and in point size 12. Two
-line spaces precede the abstract. The abstract must be limited to one
-paragraph.
+State the problem you address and why it matters (1--2 sentences).
+Describe your approach and key contributions (2--3 sentences).
+Summarize your main results and their significance (1--2 sentences).
 \end{abstract}
 
-\section{Submission of papers to TMLR}
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Introduction}
+\label{sec:intro}
+%% ═════════════════════════════════════════════════════════════════════════════
 
-TMLR requires electronic submissions, processed by
-\url{https://openreview.net/}. See TMLR's website for more instructions.
+% Paragraph 1: Motivate the problem and establish its importance.
+Deep learning has driven remarkable progress across many domains~\citep{lecun2015deep, goodfellow2016deep}.
 
-If your paper is ultimately accepted, use option {\tt accepted} with the {\tt tmlr} 
-package to adjust the format to the camera ready requirements, as follows:
-\begin{center}  
-  {\tt {\textbackslash}usepackage[accepted]\{tmlr\}}. 
-\end{center}
-You also need to specify the month and year
-by defining variables {\tt month} and {\tt year}, which respectively
-should be a 2-digit and 4-digit number. To de-anonymize and remove mentions
-to TMLR (for example for posting to preprint servers), use the preprint option,
-as in {\tt {\textbackslash}usepackage[preprint]\{tmlr\}}. 
+% Paragraph 2: Describe the limitations of existing approaches.
+While the Transformer architecture~\citep{vaswani2017attention} has become ubiquitous,
+and residual networks~\citep{he2016deep} remain foundational for vision tasks,
+scaling these models efficiently remains an open challenge.
 
-Please read carefully the instructions below, and follow them
-faithfully.
+% Paragraph 3: Introduce your approach at a high level.
+We propose a method that builds on pre-trained representations~\citep{devlin2019bert}
+and is optimized using Adam~\citep{kingma2014adam}.
 
-\subsection{Style}
+% Paragraph 4: Summarize your contributions as a list.
+The main contributions of this work are:
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+    \item Contribution one.
+    \item Contribution two.
+    \item Contribution three.
+\end{itemize}
 
-Papers to be submitted to TMLR must be prepared according to the
-instructions presented here.
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Related Work}
+\label{sec:related}
+%% ═════════════════════════════════════════════════════════════════════════════
 
-Authors are required to use the TMLR \LaTeX{} style files obtainable at the
-TMLR website. Please make sure you use the current files and
-not previous versions. Tweaking the style files may be grounds for rejection.
+% Organize by topic, not chronologically. End each paragraph by
+% differentiating your work from the cited line of research.
 
-\subsection{Retrieval of style files}
+\paragraph{Topic A.}
 
-The style files for TMLR and other journal information are available online on
-the TMLR website.
-The file \verb+tmlr.pdf+ contains these
-instructions and illustrates the
-various formatting requirements your TMLR paper must satisfy.
-Submissions must be made using \LaTeX{} and the style files
-\verb+tmlr.sty+ and \verb+tmlr.bst+ (to be used with \LaTeX{}2e). The file
-\verb+tmlr.tex+ may be used as a ``shell'' for writing your paper. All you
-have to do is replace the author, title, abstract, and text of the paper with
-your own.
+\paragraph{Topic B.}
 
-The formatting instructions contained in these style files are summarized in
-sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
+\paragraph{Topic C.}
 
-\section{General formatting instructions}
-\label{gen_inst}
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Background}
+\label{sec:background}
+%% ═════════════════════════════════════════════════════════════════════════════
 
-The text must be confined within a rectangle 6.5~inches wide and
-9~inches long. The left margin is 1~inch.
-Use 10~point type with a vertical spacing of 11~points. Computer Modern Bright is the
-preferred typeface throughout. Paragraphs are separated by 1/2~line space,
-with no indentation.
+% Define notation and cover prerequisite concepts the reader needs.
 
-Paper title is 17~point, in bold and left-aligned.
-All pages should start at 1~inch from the top of the page.
+% ── amsthm: assumption and definition environments ──
+\begin{assumption}[Smoothness]
+    \label{asm:smooth}
+    The loss function $\Loss(\params)$ is $L$-smooth, i.e.,
+    $\norm{\nabla \Loss(\params) - \nabla \Loss(\params')} \leq L \norm{\params - \params'}$
+    for all $\params, \params'$.
+\end{assumption}
 
-Authors' names are
-set in boldface. Each name is placed above its corresponding
-address and has its corresponding email contact on the same line, in italic 
-and right aligned. The lead author's name is to be listed first, and
-the co-authors' names are set to follow vertically.
+\begin{definition}[$\epsilon$-stationary point]
+    \label{def:stationary}
+    A point $\params$ is $\epsilon$-stationary if $\norm{\nabla \Loss(\params)} \leq \epsilon$.
+\end{definition}
 
-Please pay special attention to the instructions in section \ref{others}
-regarding figures, tables, acknowledgments, and references.
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Method}
+\label{sec:method}
+%% ═════════════════════════════════════════════════════════════════════════════
 
-\section{Headings: first level}
-\label{headings}
+% Describe your approach in detail.
 
-First level headings are in bold,
-flush left and in point size 12. One line space before the first level
-heading and 1/2~line space after the first level heading.
+\subsection{Problem Formulation}
+\label{sec:formulation}
 
-\subsection{Headings: second level}
+% ── math\_commands macros: objective with \argmin, \Loss, \norm, \params, \dataset ──
+Given a dataset $\dataset = \{(\mathbf{x}_i, y_i)\}_{i=1}^{N}$,
+we seek parameters $\params^*$ that minimize:
+\begin{equation}
+    \params^* = \argmin_{\params} \frac{1}{N} \sum_{i=1}^{N} \Loss(f_{\params}(\mathbf{x}_i), y_i) + \lambda \norm{\params}^2
+    \label{eq:objective}
+\end{equation}
 
-Second level headings are in bold,
-flush left and in point size 10. One line space before the second level
-heading and 1/2~line space after the second level heading.
+\subsection{Model Architecture}
+\label{sec:architecture}
 
-\subsubsection{Headings: third level}
-
-Third level headings are in bold,
-flush left and in point size 10. One line space before the third level
-heading and 1/2~line space after the third level heading.
-
-\section{Citations, figures, tables, references}
-\label{others}
-
-These instructions apply to everyone, regardless of the formatter being used.
-
-\subsection{Citations within the text}
-
-Citations within the text should be based on the \texttt{natbib} package
-and include the authors' last names and year (with the ``et~al.'' construct
-for more than two authors). When the authors or the publication are
-included in the sentence, the citation should not be in parenthesis, using \verb|\citet{}| (as
-in ``See \citet{Hinton06} for more information.''). Otherwise, the citation
-should be in parenthesis using \verb|\citep{}| (as in ``Deep learning shows promise to make progress
-towards AI~\citep{Bengio+chapter2007}.'').
-
-The corresponding references are to be listed in alphabetical order of
-authors, in the \textbf{References} section. As to the format of the
-references themselves, any style is acceptable as long as it is used
-consistently.
-
-\subsection{Footnotes}
-
-Indicate footnotes with a number\footnote{Sample of the first footnote} in the
-text. Place the footnotes at the bottom of the page on which they appear.
-Precede the footnote with a horizontal rule of 2~inches.\footnote{Sample of the second footnote}
-
-\subsection{Figures}
-
-All artwork must be neat, clean, and legible. Lines should be dark
-enough for purposes of reproduction; art work should not be
-hand-drawn. The figure number and caption always appear after the
-figure. Place one line space before the figure caption, and one line
-space after the figure. The figure caption is lower case (except for
-first word and proper nouns); figures are numbered consecutively.
-
-Make sure the figure caption does not get separated from the figure.
-Leave sufficient space to avoid splitting the figure and figure caption.
-
-You may use color figures.
-However, it is best for the
-figure captions and the paper body to make sense if the paper is printed
-either in black/white or in color.
-\begin{figure}[h]
-\begin{center}
-%\framebox[4.0in]{$\;$}
-\fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-\end{center}
-\caption{Sample figure caption.}
+% ── tikz: architecture diagram ──
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+    node distance=1.2cm,
+    block/.style={rectangle, draw, fill=blue!10, minimum width=2cm, minimum height=0.8cm, align=center, rounded corners=2pt},
+    arrow/.style={->, >=stealth, thick}
+]
+    \node[block] (input) {Input\\$\mathbf{x} \in \reals^d$};
+    \node[block, right of=input, xshift=1.5cm] (enc) {Encoder\\$f_\params$};
+    \node[block, right of=enc, xshift=1.5cm] (latent) {Latent\\$\mathbf{z} \in \reals^k$};
+    \node[block, right of=latent, xshift=1.5cm] (dec) {Decoder\\$g_\phi$};
+    \node[block, right of=dec, xshift=1.5cm] (output) {Output\\$\hat{\mathbf{x}}$};
+    \draw[arrow] (input) -- (enc);
+    \draw[arrow] (enc) -- (latent);
+    \draw[arrow] (latent) -- (dec);
+    \draw[arrow] (dec) -- (output);
+\end{tikzpicture}
+\caption{Model architecture overview.}
+\label{fig:architecture}
 \end{figure}
 
-\subsection{Tables}
+\subsection{Training Procedure}
+\label{sec:training}
 
-All tables must be centered, neat, clean and legible. Do not use hand-drawn
-tables. The table number and title always appear before the table. See
-Table~\ref{sample-table}. Place one line space before the table title, one line space after the table
-title, and one line space after the table. The table title must be lower case
-(except for first word and proper nouns); tables are numbered consecutively.
+% Example algorithm block:
+\begin{algorithm}[t]
+\caption{Training Procedure}
+\label{alg:training}
+\begin{algorithmic}[1]
+\Require Dataset $\dataset$, learning rate $\eta$, epochs $T$
+\Ensure Trained parameters $\params^*$
+\State Initialize parameters $\params_0$
+\For{$t = 1$ \textbf{to} $T$}
+    \State Sample mini-batch $\mathcal{B} \subset \dataset$
+    \State Compute loss $\Loss(\params_t; \mathcal{B})$
+    \State $\params_{t+1} \leftarrow \params_t - \eta \nabla_{\params} \Loss(\params_t; \mathcal{B})$
+\EndFor
+\State \Return $\params_T$
+\end{algorithmic}
+\end{algorithm}
 
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Experiments}
+\label{sec:experiments}
+%% ═════════════════════════════════════════════════════════════════════════════
+
+\subsection{Experimental Setup}
+\label{sec:setup}
+
+\paragraph{Datasets.}
+% Describe datasets, sizes, splits, and preprocessing.
+
+\paragraph{Baselines.}
+% List and briefly describe baseline methods.
+
+\paragraph{Implementation details.}
+% Hyperparameters, optimizer, hardware, training time, etc.
+
+\subsection{Main Results}
+\label{sec:results}
+
+% Example results table with booktabs:
 \begin{table}[t]
-\caption{Sample table title}
-\label{sample-table}
+\caption{Comparison with baselines on benchmark datasets. Best results are in \textbf{bold}, second-best are \underline{underlined}. All metrics are averaged over 3 runs $\pm$ standard deviation.}
+\label{tab:main_results}
 \begin{center}
-\begin{tabular}{ll}
-\multicolumn{1}{c}{\bf PART}  &\multicolumn{1}{c}{\bf DESCRIPTION}
-\\ \hline \\
-Dendrite         &Input terminal \\
-Axon             &Output terminal \\
-Soma             &Cell body (contains cell nucleus) \\
+\begin{tabular}{lccc}
+\toprule
+\textbf{Method} & \textbf{Dataset A} & \textbf{Dataset B} & \textbf{Dataset C} \\
+\midrule
+Baseline 1      & $85.2 \pm 0.3$     & $72.1 \pm 0.5$     & $91.0 \pm 0.2$     \\
+Baseline 2      & $86.7 \pm 0.4$     & $73.8 \pm 0.3$     & $91.5 \pm 0.3$     \\
+Baseline 3      & \underline{$87.3 \pm 0.2$}     & \underline{$75.2 \pm 0.4$}     & \underline{$92.1 \pm 0.2$}     \\
+\midrule
+\textbf{Ours}   & $\mathbf{89.1 \pm 0.2}$ & $\mathbf{77.5 \pm 0.3}$ & $\mathbf{93.4 \pm 0.1}$ \\
+\bottomrule
 \end{tabular}
 \end{center}
 \end{table}
 
-\section{Default Notation}
+% Example multi-panel figure:
+\begin{figure}[t]
+\centering
+\begin{subfigure}[b]{0.32\linewidth}
+    \centering
+    \fbox{\rule[-.5cm]{0cm}{3cm}\rule{2.5cm}{0cm}}
+    \caption{Result visualization A}
+    \label{fig:result_a}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\linewidth}
+    \centering
+    \fbox{\rule[-.5cm]{0cm}{3cm}\rule{2.5cm}{0cm}}
+    \caption{Result visualization B}
+    \label{fig:result_b}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.32\linewidth}
+    \centering
+    \fbox{\rule[-.5cm]{0cm}{3cm}\rule{2.5cm}{0cm}}
+    \caption{Result visualization C}
+    \label{fig:result_c}
+\end{subfigure}
+\caption{Qualitative results. Replace placeholders with \texttt{\textbackslash includegraphics[width=\textbackslash linewidth]\{fig.pdf\}}.}
+\label{fig:results}
+\end{figure}
 
-In an attempt to encourage standardized notation, we have included the
-notation file from the textbook, \textit{Deep Learning}
-\cite{goodfellow2016deep} available at
-\url{https://github.com/goodfeli/dlbook_notation/}.  Use of this style
-is not required and can be disabled by commenting out
-\texttt{math\_commands.tex}.
+\subsection{Ablation Study}
+\label{sec:ablation}
 
-
-\centerline{\bf Numbers and Arrays}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1in}p{3.25in}}
-$\displaystyle a$ & A scalar (integer or real)\\
-$\displaystyle \va$ & A vector\\
-$\displaystyle \mA$ & A matrix\\
-$\displaystyle \tA$ & A tensor\\
-$\displaystyle \mI_n$ & Identity matrix with $n$ rows and $n$ columns\\
-$\displaystyle \mI$ & Identity matrix with dimensionality implied by context\\
-$\displaystyle \ve^{(i)}$ & Standard basis vector $[0,\dots,0,1,0,\dots,0]$ with a 1 at position $i$\\
-$\displaystyle \text{diag}(\va)$ & A square, diagonal matrix with diagonal entries given by $\va$\\
-$\displaystyle \ra$ & A scalar random variable\\
-$\displaystyle \rva$ & A vector-valued random variable\\
-$\displaystyle \rmA$ & A matrix-valued random variable\\
+% Example ablation table:
+\begin{table}[t]
+\caption{Ablation study on Dataset A. Each row removes one component from the full model.}
+\label{tab:ablation}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Configuration}       & \textbf{Accuracy (\%)} & \textbf{$\Delta$} \\
+\midrule
+Full model                    & $\mathbf{89.1}$        & ---                \\
+\quad w/o Component A         & $87.4$                 & $-1.7$             \\
+\quad w/o Component B         & $88.0$                 & $-1.1$             \\
+\quad w/o Component C         & $86.9$                 & $-2.2$             \\
+\bottomrule
 \end{tabular}
-\egroup
-\vspace{0.25cm}
+\end{center}
+\end{table}
 
-\centerline{\bf Sets and Graphs}
-\bgroup
-\def\arraystretch{1.5}
+\subsection{Analysis}
+\label{sec:analysis}
 
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle \sA$ & A set\\
-$\displaystyle \R$ & The set of real numbers \\
-$\displaystyle \{0, 1\}$ & The set containing 0 and 1 \\
-$\displaystyle \{0, 1, \dots, n \}$ & The set of all integers between $0$ and $n$\\
-$\displaystyle [a, b]$ & The real interval including $a$ and $b$\\
-$\displaystyle (a, b]$ & The real interval excluding $a$ but including $b$\\
-$\displaystyle \sA \backslash \sB$ & Set subtraction, i.e., the set containing the elements of $\sA$ that are not in $\sB$\\
-$\displaystyle \gG$ & A graph\\
-$\displaystyle \parents_\gG(\ervx_i)$ & The parents of $\ervx_i$ in $\gG$
+% ── cleveref: smart cross-references ──
+As shown in \cref{tab:main_results}, our method outperforms all baselines.
+The architecture is illustrated in \cref{fig:architecture}, and the training
+procedure is detailed in \cref{alg:training}. The objective in \cref{eq:objective}
+converges under \cref{asm:smooth}, as proven in \cref{thm:convergence}.
+
+% ── xcolor + collaboration macros: color-coded comments ──
+\todo{Add error bar analysis here.}
+\authorA{Should we include per-class breakdown?}
+\authorB{Yes, moved to \cref{app:results}.}
+
+% ── multirow + tablefootnote + booktabs: advanced table ──
+\begin{table}[t]
+\caption{Results broken down by model size, showing that scaling improves performance.}
+\label{tab:scaling}
+\begin{center}
+\begin{tabular}{llcc}
+\toprule
+\textbf{Model} & \textbf{Size} & \textbf{Acc. (\%)} & \textbf{FLOPs} \\
+\midrule
+\multirow{2}{*}{Ours}   & Small  & $87.2$ & $1.2 \times 10^9$ \\
+                         & Large  & $\mathbf{89.1}$ & $4.8 \times 10^9$\tablefootnote{Measured on a single A100 GPU.} \\
+\midrule
+\multirow{2}{*}{Baseline} & Small  & $85.0$ & $1.1 \times 10^9$ \\
+                           & Large  & $86.7$ & $4.5 \times 10^9$ \\
+\bottomrule
 \end{tabular}
-\vspace{0.25cm}
+\end{center}
+\end{table}
 
+% ── wrapfig: text wrapping around a figure ──
+\begin{wrapfigure}{r}{0.35\linewidth}
+    \centering
+    \fbox{\rule[-.5cm]{0cm}{2.5cm}\rule{2cm}{0cm}}
+    \caption{Scaling behavior.}
+    \label{fig:scaling}
+\end{wrapfigure}
+We observe that performance scales log-linearly with compute budget,
+consistent with neural scaling laws. As shown in \cref{fig:scaling},
+increasing model size yields diminishing returns beyond $10^{10}$ FLOPs.
+The floor of the batch size is $\floor{N / k}$ and the ceiling
+is $\ceil{N / k}$, where $N$ is the dataset size and $k$ is the
+number of workers. We note that $\hat{\params}_T \convp \params^*$ as
+$T \to \infty$ under standard regularity conditions.
 
-\centerline{\bf Indexing}
-\bgroup
-\def\arraystretch{1.5}
+% ── enumitem: customized lists ──
+Key findings from our scaling analysis:
+\begin{enumerate}[label=(\roman*), itemsep=2pt]
+    \item Performance scales as $\bigo{\log N}$ with dataset size.
+    \item The computational cost is $\bigo{d^2}$ per layer.
+    \item Memory usage grows linearly with sequence length.
+\end{enumerate}
 
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle \eva_i$ & Element $i$ of vector $\va$, with indexing starting at 1 \\
-$\displaystyle \eva_{-i}$ & All elements of vector $\va$ except for element $i$ \\
-$\displaystyle \emA_{i,j}$ & Element $i, j$ of matrix $\mA$ \\
-$\displaystyle \mA_{i, :}$ & Row $i$ of matrix $\mA$ \\
-$\displaystyle \mA_{:, i}$ & Column $i$ of matrix $\mA$ \\
-$\displaystyle \etA_{i, j, k}$ & Element $(i, j, k)$ of a 3-D tensor $\tA$\\
-$\displaystyle \tA_{:, :, i}$ & 2-D slice of a 3-D tensor\\
-$\displaystyle \erva_i$ & Element $i$ of the random vector $\rva$ \\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Discussion}
+\label{sec:discussion}
+%% ═════════════════════════════════════════════════════════════════════════════
 
+% Interpret results, discuss limitations, and suggest future work.
 
-\centerline{\bf Calculus}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1.25in}p{3.25in}}
-% NOTE: the [2ex] on the next line adds extra height to that row of the table.
-% Without that command, the fraction on the first line is too tall and collides
-% with the fraction on the second line.
-$\displaystyle\frac{d y} {d x}$ & Derivative of $y$ with respect to $x$\\ [2ex]
-$\displaystyle \frac{\partial y} {\partial x} $ & Partial derivative of $y$ with respect to $x$ \\
-$\displaystyle \nabla_\vx y $ & Gradient of $y$ with respect to $\vx$ \\
-$\displaystyle \nabla_\mX y $ & Matrix derivatives of $y$ with respect to $\mX$ \\
-$\displaystyle \nabla_\tX y $ & Tensor containing derivatives of $y$ with respect to $\tX$ \\
-$\displaystyle \frac{\partial f}{\partial \vx} $ & Jacobian matrix $\mJ \in \R^{m\times n}$ of $f: \R^n \rightarrow \R^m$\\
-$\displaystyle \nabla_\vx^2 f(\vx)\text{ or }\mH( f)(\vx)$ & The Hessian matrix of $f$ at input point $\vx$\\
-$\displaystyle \int f(\vx) d\vx $ & Definite integral over the entire domain of $\vx$ \\
-$\displaystyle \int_\sS f(\vx) d\vx$ & Definite integral with respect to $\vx$ over the set $\sS$ \\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
+\paragraph{Limitations.}
+% Be upfront about what your method does not handle well.
 
-\centerline{\bf Probability and Information Theory}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle P(\ra)$ & A probability distribution over a discrete variable\\
-$\displaystyle p(\ra)$ & A probability distribution over a continuous variable, or over
-a variable whose type has not been specified\\
-$\displaystyle \ra \sim P$ & Random variable $\ra$ has distribution $P$\\% so thing on left of \sim should always be a random variable, with name beginning with \r
-$\displaystyle  \E_{\rx\sim P} [ f(x) ]\text{ or } \E f(x)$ & Expectation of $f(x)$ with respect to $P(\rx)$ \\
-$\displaystyle \Var(f(x)) $ &  Variance of $f(x)$ under $P(\rx)$ \\
-$\displaystyle \Cov(f(x),g(x)) $ & Covariance of $f(x)$ and $g(x)$ under $P(\rx)$\\
-$\displaystyle H(\rx) $ & Shannon entropy of the random variable $\rx$\\
-$\displaystyle \KL ( P \Vert Q ) $ & Kullback-Leibler divergence of P and Q \\
-$\displaystyle \mathcal{N} ( \vx ; \vmu , \mSigma)$ & Gaussian distribution %
-over $\vx$ with mean $\vmu$ and covariance $\mSigma$ \\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
+\paragraph{Future work.}
+% Concrete next steps, not vague aspirations.
 
-\centerline{\bf Functions}
-\bgroup
-\def\arraystretch{1.5}
-\begin{tabular}{p{1.25in}p{3.25in}}
-$\displaystyle f: \sA \rightarrow \sB$ & The function $f$ with domain $\sA$ and range $\sB$\\
-$\displaystyle f \circ g $ & Composition of the functions $f$ and $g$ \\
-  $\displaystyle f(\vx ; \vtheta) $ & A function of $\vx$ parametrized by $\vtheta$.
-  (Sometimes we write $f(\vx)$ and omit the argument $\vtheta$ to lighten notation) \\
-$\displaystyle \log x$ & Natural logarithm of $x$ \\
-$\displaystyle \sigma(x)$ & Logistic sigmoid, $\displaystyle \frac{1} {1 + \exp(-x)}$ \\
-$\displaystyle \zeta(x)$ & Softplus, $\log(1 + \exp(x))$ \\
-$\displaystyle || \vx ||_p $ & $\normlp$ norm of $\vx$ \\
-$\displaystyle || \vx || $ & $\normltwo$ norm of $\vx$ \\
-$\displaystyle x^+$ & Positive part of $x$, i.e., $\max(0,x)$\\
-$\displaystyle \1_\mathrm{condition}$ & is 1 if the condition is true, 0 otherwise\\
-\end{tabular}
-\egroup
-\vspace{0.25cm}
+%% ═════════════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+\label{sec:conclusion}
+%% ═════════════════════════════════════════════════════════════════════════════
 
-
-
-\section{Final instructions}
-Do not change any aspects of the formatting parameters in the style files.
-In particular, do not modify the width or length of the rectangle the text
-should fit into, and do not change font sizes (except perhaps in the
-\textbf{References} section; see below). Please note that pages should be
-numbered.
-
-\section{Preparing PostScript or PDF files}
-
-Please prepare PostScript or PDF files with paper size ``US Letter'', and
-not, for example, ``A4''. The -t
-letter option on dvips will produce US Letter files.
-
-Consider directly generating PDF files using \verb+pdflatex+
-(especially if you are a MiKTeX user).
-PDF figures must be substituted for EPS figures, however.
-
-Otherwise, please generate your PostScript and PDF files with the following commands:
-\begin{verbatim}
-dvips mypaper.dvi -t letter -Ppdf -G0 -o mypaper.ps
-ps2pdf mypaper.ps mypaper.pdf
-\end{verbatim}
-
-\subsection{Margins in LaTeX}
-
-Most of the margin problems come from figures positioned by hand using
-\verb+\special+ or other commands. We suggest using the command
-\verb+\includegraphics+
-from the graphicx package. Always specify the figure width as a multiple of
-the line width as in the example below using .eps graphics
-\begin{verbatim}
-   \usepackage[dvips]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.eps}
-\end{verbatim}
-or % Apr 2009 addition
-\begin{verbatim}
-   \usepackage[pdftex]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.pdf}
-\end{verbatim}
-for .pdf graphics.
-See section~4.4 in the graphics bundle documentation (\url{http://www.ctan.org/tex-archive/macros/latex/required/graphics/grfguide.ps})
-
-A number of width problems arise when LaTeX cannot properly hyphenate a
-line. Please give LaTeX hyphenation hints using the \verb+\-+ command.
+% Restate the problem, your solution, and the key takeaway (3--5 sentences).
 
 \subsubsection*{Broader Impact Statement}
 In this optional section, TMLR encourages authors to discuss possible repercussions of their work,
-notably any potential negative impact that a user of this research should be aware of. 
+notably any potential negative impact that a user of this research should be aware of.
 Authors should consult the TMLR Ethics Guidelines available on the TMLR website
 for guidance on how to approach this subject.
+
+\subsubsection*{Reproducibility Statement}
+% Describe what you have done to ensure reproducibility:
+% code availability, hyperparameter tables, random seeds, etc.
 
 \subsubsection*{Author Contributions}
 If you'd like to, you may include a section for author contributions as is done
 in many journals. This is optional and at the discretion of the authors. Only add
-this information once your submission is accepted and deanonymized. 
+this information once your submission is accepted and deanonymized.
 
 \subsubsection*{Acknowledgments}
 Use unnumbered third level headings for the acknowledgments. All
 acknowledgments, including those to funding agencies, go at the end of the paper.
-Only add this information once your submission is accepted and deanonymized. 
+Only add this information once your submission is accepted and deanonymized.
 
 \bibliography{main}
 \bibliographystyle{tmlr}
 
 \appendix
-\section{Appendix}
-You may include other additional sections here.
+
+\section{Additional Experimental Results}
+\label{app:results}
+% Full tables, per-class breakdowns, additional visualizations.
+
+\section{Theoretical Results}
+\label{app:proofs}
+% Detailed proofs that are too long for the main text.
+
+% ── amsthm + cleveref: theorem with cross-reference ──
+\begin{theorem}[Convergence rate]
+    \label{thm:convergence}
+    Under \cref{asm:smooth}, SGD with step size $\eta = 1/L$ satisfies:
+    \begin{equation}
+        \frac{1}{T} \sum_{t=0}^{T-1} \expect{\norm{\nabla \Loss(\params_t)}^2}
+        \leq \frac{2L \left( \Loss(\params_0) - \Loss^* \right)}{T} + \frac{\sigma^2}{T}
+    \end{equation}
+    where $\Loss^* = \inf_\params \Loss(\params)$ and $\sigma^2$ is the variance of the stochastic gradient.
+\end{theorem}
+
+\begin{proof}
+    By $L$-smoothness of $\Loss$ we have \ldots
+\end{proof}
+
+\section{Implementation Details}
+\label{app:implementation}
+% Full hyperparameter tables, architecture diagrams, training curves.
+
+% ── pgfplots: training curve ──
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    width=0.7\linewidth,
+    height=5cm,
+    xlabel={Epoch},
+    ylabel={Loss},
+    legend pos=north east,
+    grid=major,
+    grid style={dashed, gray!30},
+]
+\addplot[blue, thick] coordinates {(0,2.5)(10,1.8)(20,1.2)(30,0.8)(40,0.5)(50,0.35)(60,0.28)(70,0.22)(80,0.19)(90,0.17)(100,0.16)};
+\addlegendentry{Train}
+\addplot[red, thick, dashed] coordinates {(0,2.6)(10,1.9)(20,1.4)(30,1.0)(40,0.7)(50,0.55)(60,0.48)(70,0.44)(80,0.42)(90,0.41)(100,0.41)};
+\addlegendentry{Validation}
+\end{axis}
+\end{tikzpicture}
+\caption{Training and validation loss curves.}
+\label{fig:training_curves}
+\end{figure}
+
+% Example hyperparameter table:
+\begin{table}[h]
+\caption{Hyperparameters used in all experiments.}
+\label{tab:hyperparams}
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+\textbf{Hyperparameter}   & \textbf{Value} \\
+\midrule
+Learning rate              & $3 \times 10^{-4}$ \\
+Batch size                 & 256 \\
+Weight decay               & $10^{-5}$ \\
+Optimizer                  & AdamW \\
+LR schedule                & Cosine annealing \\
+Warmup steps               & 1000 \\
+Training epochs            & 100 \\
+Hidden dimension           & 768 \\
+Number of layers           & 12 \\
+Attention heads            & 12 \\
+Dropout                    & 0.1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
 
 \end{document}
