@@ -1,4 +1,4 @@
-# TMLR Journal Template
+# TMLR Journal Template (ML-Extended)
 
 LaTeX template for Transactions on Machine Learning Research (TMLR), extended with ML-specific packages, macros, and examples.
 
